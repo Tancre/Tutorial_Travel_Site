@@ -31,7 +31,7 @@ function scssTask() {
 	return src(files.scssPath)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(postcss([ autoprefixer(), cssnano() ]))
+		.pipe(postcss([ autoprefixer()]))
 		.pipe(sourcemaps.write('.'))
 		.pipe(dest('dist'))
 		.pipe(browserSync.stream());
