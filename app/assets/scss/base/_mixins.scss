@@ -9,3 +9,12 @@
 @mixin atLarge {
 	@media (min-width: 1200px) { @content };
 }
+
+
+@mixin clearfix {
+	&::after{
+		content: "";
+		clear: both;
+		display: table;
+	}
+}
