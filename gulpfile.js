@@ -11,6 +11,8 @@ sourcemaps = require('gulp-sourcemaps'),
 uglify = require('gulp-uglify'),
 imagemin = require('gulp-imagemin'),
 svgSprite = require('gulp-svg-sprite'),
+rename = require('gulp-rename'),
+del = require('del'),
 browserSync = require('browser-sync').create();
 
 // file path variables
@@ -18,13 +20,16 @@ const files = {
 	scssPath: './app/assets/scss/**/*.scss',
 	jsPath: './app/assets/js/**/*.js',
 	imgsPath: './app/assets/images/**/*',
-	iconsPath: './app/assets/images/icons/**/*.svg'
+	iconsPath: './app/assets/images/icons/**/*.svg',
+	spriteCSSPath: './app/temp/sprite/css/*.css',
+	spriteGraphicPath: './app/temp/sprite/css/*.svg'
 }
 
 // create sprite task
 const config =  {
 	mode: {
 		css: {
+			sprite: 'sprite.svg',
 			render: {
 				css: {
 					template:'./gulp/templates/sprite.css'
@@ -34,10 +39,29 @@ const config =  {
 	}
 }
 
+function beginClean(){
+	return del(['./app/temp/sprite', './app/assets/images/sprites', 'dist/images/sprite']);
+}
+
 function createSpriteTask(){
 	return src(files.iconsPath)
 		.pipe(svgSprite(config))
-		.pipe(dest('dist/sprite/'));
+		.pipe(dest('app/temp/sprite/'));
+}
+
+function copySpriteGraphic(){
+	return src(files.spriteGraphicPath)
+	.pipe(dest('./dist/images/sprite'));
+}
+
+function copySpriteCSS(){
+	return src(files.spriteCSSPath)
+	.pipe(rename('_sprite.scss'))
+	.pipe(dest('app/assets/scss/modules'));
+}
+
+function endClean(){
+	return del(['./app/temp']);
 }
 
 // optimize images task
@@ -92,9 +116,11 @@ const watch = function() {
 exports.default = series(
 	parallel( scssTask, jsTask, createSpriteTask, imagesTask),
 	cacheBustTask,
-	createSpriteTask,
 	watch
 );
 
 exports.watch = watch;
 exports.createSpriteTask = createSpriteTask;
+exports.copySpriteCSS = copySpriteCSS;
+exports.copySpriteGraphic = copySpriteGraphic;
+exports.icons = series(beginClean, createSpriteTask, copySpriteGraphic, copySpriteCSS, endClean);
