@@ -10,13 +10,34 @@ sass = require('gulp-sass'),
 sourcemaps = require('gulp-sourcemaps'),
 uglify = require('gulp-uglify'),
 imagemin = require('gulp-imagemin'),
+svgSprite = require('gulp-svg-sprite'),
 browserSync = require('browser-sync').create();
 
 // file path variables
 const files = {
 	scssPath: './app/assets/scss/**/*.scss',
 	jsPath: './app/assets/js/**/*.js',
-	imgsPath: './app/assets/images/**/*'
+	imgsPath: './app/assets/images/**/*',
+	iconsPath: './app/assets/images/icons/**/*.svg'
+}
+
+// create sprite task
+const config =  {
+	mode: {
+		css: {
+			render: {
+				css: {
+					template:'./gulp/templates/sprite.css'
+				}
+			}
+		}
+	}
+}
+
+function createSpriteTask(){
+	return src(files.iconsPath)
+		.pipe(svgSprite(config))
+		.pipe(dest('dist/sprite/'));
 }
 
 // optimize images task
@@ -69,9 +90,11 @@ const watch = function() {
 
 // default task
 exports.default = series(
-	parallel( scssTask, jsTask, imagesTask),
+	parallel( scssTask, jsTask, createSpriteTask, imagesTask),
 	cacheBustTask,
+	createSpriteTask,
 	watch
 );
 
 exports.watch = watch;
+exports.createSpriteTask = createSpriteTask;
