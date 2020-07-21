@@ -13,6 +13,9 @@ imagemin = require('gulp-imagemin'),
 svgSprite = require('gulp-svg-sprite'),
 rename = require('gulp-rename'),
 del = require('del'),
+webpack = require('webpack'),
+webpackStream = require('webpack-stream'),
+webpackConfig = require('./webpack.config.js'),
 browserSync = require('browser-sync').create();
 
 // file path variables
@@ -23,6 +26,18 @@ const files = {
 	iconsPath: './app/assets/images/icons/**/*.svg',
 	spriteCSSPath: './app/temp/sprite/css/*.css',
 	spriteGraphicPath: './app/temp/sprite/css/*.svg'
+}
+
+// webpack task
+function cleanScripts(){
+	return del('./dist/scripts/App.js');
+}
+
+function scriptsTask(){
+	return src('./app/assets/js/App.js')
+		.pipe(webpackStream(webpackConfig), webpack)
+		.pipe(dest('./dist/scripts'))
+		.pipe(browserSync.stream());
 }
 
 // create sprite task
@@ -51,13 +66,13 @@ function createSpriteTask(){
 
 function copySpriteGraphic(){
 	return src(files.spriteGraphicPath)
-	.pipe(dest('./dist/images/sprite'));
+		.pipe(dest('./dist/images/sprite'));
 }
 
 function copySpriteCSS(){
 	return src(files.spriteCSSPath)
-	.pipe(rename('_sprite.scss'))
-	.pipe(dest('app/assets/scss/modules'));
+		.pipe(rename('_sprite.scss'))
+		.pipe(dest('app/assets/scss/modules'));
 }
 
 function endClean(){
@@ -83,12 +98,13 @@ function scssTask() {
 }
 
 // js task
-function jsTask() {
-	return src(files.jsPath)
-		.pipe(concat('all.js'))
-		.pipe(uglify())
-		.pipe(dest('dist'));
-}
+// function jsTask() {
+// 	return src(files.jsPath)
+// 		.pipe(concat('all.js'))
+// 		//.pipe(uglify())
+// 		.pipe(dest('dist'))
+// 		.pipe(browserSync.stream());
+// }
 
 // cachebusting task
 const cbString = new Date().getTime();
@@ -107,14 +123,14 @@ const watch = function() {
     	}
     });
     gulp.watch("./app/assets/scss/**/*.scss", {usePolling : true}, gulp.series(scssTask));
-    gulp.watch("./app/assets/js/**/*.js", {usePolling : true}, gulp.series(jsTask));
+    gulp.watch("./app/assets/js/**/*.js", {usePolling : true}, gulp.series(cleanScripts, scriptsTask));
     gulp.watch("./app/assets/images", {usePolling : true}, gulp.series(imagesTask));
     gulp.watch("./*.html").on('change', browserSync.reload);
 };
 
 // default task
 exports.default = series(
-	parallel( scssTask, jsTask, createSpriteTask, imagesTask),
+	parallel( scssTask, cleanScripts, scriptsTask, createSpriteTask, imagesTask),
 	cacheBustTask,
 	watch
 );
@@ -124,3 +140,4 @@ exports.createSpriteTask = createSpriteTask;
 exports.copySpriteCSS = copySpriteCSS;
 exports.copySpriteGraphic = copySpriteGraphic;
 exports.icons = series(beginClean, createSpriteTask, copySpriteGraphic, copySpriteCSS, endClean);
+exports.scripts = series(cleanScripts, scriptsTask);

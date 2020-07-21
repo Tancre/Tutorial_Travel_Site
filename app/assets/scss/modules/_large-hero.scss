@@ -6,13 +6,18 @@
 		display: block;
 	}
 
-	&__text-content{
-	position: absolute;
-	top: 50%;
-	left: 0px;
-	width: 100%;
-	transform: translateY(-50%);
-	text-align: center
+	&__text-content {
+		padding-top: 88px;
+		position: absolute;
+		top: 50%;
+		left: 0px;
+		width: 100%;
+		transform: translateY(-50%);
+		text-align: center;
+
+		@include atMedium(){
+			padding-top: 60px;
+		}
 	}
 
 	&__title {
