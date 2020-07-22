@@ -1,9 +1,3 @@
-alert('test for webpack 3');
+import MobileMenu from './modules/MobileMenu';
 
-var Person = require('./modules/Person');
-
-var john = new Person("John Doe", "blue");
-john.greet();
-
-var jane = new Person("Jane Smith", "green");
-jane.greet();  
+var mobileMenu = new MobileMenu();

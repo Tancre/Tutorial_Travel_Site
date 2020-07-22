@@ -3,13 +3,22 @@
 	position: absolute;
 	width: 100%;
 	z-index: 2;
+	transition: background-color .3s ease-out;
+
+	&--is-expanded {
+		background-color: rgba($mainBlue, .55); 
+	}
 	
 	@include atMedium(){
 		background-color: rgba($mainBlue, .3);
 	}
 
 	&__btn-container{
-		float: right;
+		
+
+		@include atMedium(){
+			float: right;
+		}
 	}
 
 	&__logo{
@@ -33,22 +42,88 @@
 
 	&__menu-icon{
 		width: 20px;
-		height: 20px;
-		background: #FFF;
+		height: 19px;
 		position: absolute;
+		z-index: 10;
 		top: 10px;
 		right: 10px;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 20px;
+			height: 3px;
+			background: #FFF;
+			transform-origin: 0 0;
+			transition: transform .3s ease-out;
+		}
+
+		&__middle {
+			position: absolute;
+			top: 8px;
+			left: 0;
+			width: 20px;
+			height: 3px;
+			background: #FFF;
+			transition: all .3s ease-out;
+			transform-origin: 0 50%;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 20px;
+			height: 3px;
+			background: #FFF;
+			transform-origin: 0 100%;
+			transition: transform .3s ease-out;
+		}
 
 		@include atMedium {
 			display: none;
 		}
 	}
 
+	&__menu-icon--close-x {
+		&::before {
+			transform: rotate(45deg) scaleX(1.25);
+		}
+
+		.site-header__menu-icon__middle{
+			transform: scaleX(0);
+			opacity: 0;
+		}
+
+		&::after {
+			transform: rotate(-45deg) scaleX(1.25) translateY(1px);
+
+		}
+	}
+
 	&__menu-content{
-		display: none;
+		opacity: 0;
+		transform: scale(1.2);
+		transtion: all .3s ease-out;
+		position: relative;
+		z-index: -10;
+		padding-top: 90px;
+		text-align: center;
 
 		@include atMedium(){
-			display: block;
+			opacity: 1;
+			z-index: 1;
+			padding-top: 0;
+			transform: scale(1); 
+		}
+
+		&--is-visible{
+			transform: scale(1);
+			opacity: 1;
+			z-index: 1;
 		}
 	}
 }

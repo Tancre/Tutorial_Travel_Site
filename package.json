@@ -6,7 +6,10 @@
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
     "autoprefixer": "^9.8.5",
+    "babel-loader": "^8.1.0",
     "browser-sync": "^2.26.10",
     "cssnano": "^4.1.10",
     "del": "^5.1.0",

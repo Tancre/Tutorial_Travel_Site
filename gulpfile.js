@@ -13,8 +13,8 @@ imagemin = require('gulp-imagemin'),
 svgSprite = require('gulp-svg-sprite'),
 rename = require('gulp-rename'),
 del = require('del'),
-webpack = require('webpack'),
-webpackStream = require('webpack-stream'),
+//webpack = require('webpack'),
+webpack = require('webpack-stream'),
 webpackConfig = require('./webpack.config.js'),
 browserSync = require('browser-sync').create();
 
@@ -35,7 +35,10 @@ function cleanScripts(){
 
 function scriptsTask(){
 	return src('./app/assets/js/App.js')
-		.pipe(webpackStream(webpackConfig), webpack)
+		.pipe(webpack(webpackConfig, null, function(err, stats) {
+      		if (err) { console.log(err); };
+    	}))
+		// .on('error', function (err) { if(err){ console.log(err.message);} })
 		.pipe(dest('./dist/scripts'))
 		.pipe(browserSync.stream());
 }
