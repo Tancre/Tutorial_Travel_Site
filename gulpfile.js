@@ -11,11 +11,12 @@ sourcemaps = require('gulp-sourcemaps'),
 uglify = require('gulp-uglify'),
 imagemin = require('gulp-imagemin'),
 svgSprite = require('gulp-svg-sprite'),
+svg2png = require('gulp-svg2png'),
 rename = require('gulp-rename'),
 del = require('del'),
-//webpack = require('webpack'),
 webpack = require('webpack-stream'),
 webpackConfig = require('./webpack.config.js'),
+modernizr = require('gulp-modernizr'),
 browserSync = require('browser-sync').create();
 
 // file path variables
@@ -27,6 +28,23 @@ const files = {
 	spriteCSSPath: './app/temp/sprite/css/*.css',
 	spriteGraphicPath: './app/temp/sprite/css/*.svg'
 }
+
+
+// modernizr task
+function modernizrTask(){
+	return src(['./app/assets/scss/**/*.scss','./app/assets/js/**/*.js'])
+		.pipe(modernizr({
+			"options": [
+				"setClasses"
+			]
+		}))
+		.pipe(dest('./app/assets/temp'));
+}
+
+function endCleanModernizr(){
+	return del(['./app/assets/temp']);
+}
+
 
 // webpack task
 function cleanScripts(){
@@ -45,8 +63,20 @@ function scriptsTask(){
 
 // create sprite task
 const config =  {
+	shape: {
+		spacing: {
+			padding: 1
+		}
+	},
 	mode: {
 		css: {
+			variables: {
+				replaceSvgWithPng:function() {
+					return function(sprite, render) {
+						return render(sprite).split('.svg').join('.png');
+					}
+				}
+			},
 			sprite: 'sprite.svg',
 			render: {
 				css: {
@@ -67,8 +97,14 @@ function createSpriteTask(){
 		.pipe(dest('app/temp/sprite/'));
 }
 
+function createPngCopy(){
+	return src('./app/temp/sprite/css/*.svg')
+		.pipe(svg2png())
+		.pipe(dest('./dist/images/sprite'));
+}
+
 function copySpriteGraphic(){
-	return src(files.spriteGraphicPath)
+	return src('./app/temp/sprite/css/*.{svg,png}')
 		.pipe(dest('./dist/images/sprite'));
 }
 
@@ -81,6 +117,8 @@ function copySpriteCSS(){
 function endClean(){
 	return del(['./app/temp']);
 }
+
+
 
 // optimize images task
 function imagesTask(){
@@ -126,7 +164,7 @@ const watch = function() {
     	}
     });
     gulp.watch("./app/assets/scss/**/*.scss", {usePolling : true}, gulp.series(scssTask));
-    gulp.watch("./app/assets/js/**/*.js", {usePolling : true}, gulp.series(cleanScripts, scriptsTask));
+    gulp.watch("./app/assets/js/**/*.js", {usePolling : true}, gulp.series(cleanScripts, modernizrTask, scriptsTask, endCleanModernizr));
     gulp.watch("./app/assets/images", {usePolling : true}, gulp.series(imagesTask));
     gulp.watch("./*.html").on('change', browserSync.reload);
 };
@@ -142,5 +180,6 @@ exports.watch = watch;
 exports.createSpriteTask = createSpriteTask;
 exports.copySpriteCSS = copySpriteCSS;
 exports.copySpriteGraphic = copySpriteGraphic;
-exports.icons = series(beginClean, createSpriteTask, copySpriteGraphic, copySpriteCSS, endClean);
-exports.scripts = series(cleanScripts, scriptsTask);
+exports.modernizrTask = modernizrTask;
+exports.icons = series(beginClean, createSpriteTask, createPngCopy, copySpriteGraphic, copySpriteCSS, endClean);
+exports.scripts = series(cleanScripts, modernizrTask ,scriptsTask);
