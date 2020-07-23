@@ -7,6 +7,8 @@
   <meta name="keywords" content="Travel planning, travel bundles, travel escapes, affordable travel">
   <meta name="description" content="Your clarity. One trip away. We create soul restoring journeys that inspire you to be you.">
   <link rel="stylesheet" href="dist/style.css?cb=1595251453303">
+
+    <script type="text/javascript" src="./dist/scripts/Vendor.js"></script>
 </head>
 <body>
   
@@ -60,15 +62,15 @@
       <h3 class="headline headline--centered headline--orange headline--small headline--narrow headline--light headline--b-margin-large">Ever since, we&rsquo;ve been working to make travel <strong>better for everyone.</strong></h3>
 
       <div class="wrapper wrapper--medium wrapper--b-margin">
-        <img sizes="(min-width: 970px) 976px, 100vw" srcset="dist/images/first-trip-low-res.jpg 565w, dist/images/first-trip.jpg, 976w dist/images/first-trip-hi-dpi.jpg 1952w" alt="Couple walking down a street.">
+        <img class="lazyload" sizes="(min-width: 970px) 976px, 100vw" data-srcset="dist/images/first-trip-low-res.jpg 565w, dist/images/first-trip.jpg, 976w dist/images/first-trip-hi-dpi.jpg 1952w" alt="Couple walking down a street.">
       </div>
 
       <div class="row row--gutters">
         <div class="row__medium-4 row__medium-4--larger row__b-margin-until-medium">
           <picture>
-            <source sizes="404px" srcset="dist/images/our-start.jpg 404w, dist/images/our-start-hi-dpi.jpg 808w" media="(min-width: 1020px)">
-            <source sizes="320px" srcset="dist/images/our-start-portrait-hi-dpi.jpg 382w, dist/images/our-start-portrait-hi-dpi.jpg 764w" media="(min-width: 800px)">
-            <img srcset="dist/images/our-start-landscape-hi-dpi.jpg 800w, dist/images/our-start-landscape-hi-dpi.jpg 1600w" alt="Our founder, Jane Doe">
+            <source sizes="404px" data-srcset="dist/images/our-start.jpg 404w, dist/images/our-start-hi-dpi.jpg 808w" media="(min-width: 1020px)">
+            <source sizes="320px" data-srcset="dist/images/our-start-portrait-hi-dpi.jpg 382w, dist/images/our-start-portrait-hi-dpi.jpg 764w" media="(min-width: 800px)">
+            <img class="lazylaod" data-srcset="dist/images/our-start-landscape-hi-dpi.jpg 800w, dist/images/our-start-landscape-hi-dpi.jpg 1600w" alt="Our founder, Jane Doe">
           </picture>
         </div>
         <div class="row__medium-8 row__medium-8--smaller">
@@ -120,17 +122,17 @@
     </div>
   </div>
 
-  <div id="testimonials" class="page-section page-section--testimonials page-section--no-b-padding-until-medium" data-matching-link="#testimonials-link">
-    <div class="wrapper wrapper--no-padding-until-medium">
+  <div id="testimonials" class="page-section page-section--testimonials page-section--no-b-padding-until-large lazyload" data-matching-link="#testimonials-link">
+    <div class="wrapper wrapper--no-padding-until-large ">
 
       <h2 class="section-title section-title--blue"> <span class="icon icon--comment section-title__icon"></span> Real <strong>Testimonials</strong>
       </h2>
 
-      <div class="row row--equal-height-at-medium row--gutters row--t-padding row--gutters-small generic-content-container">
+      <div class="row row--equal-height-at-medium row--gutters row--t-padding row--gutters-small generic-content-container ">
         <div class="row__medium-4">
           <div class="testimonial">
             <div class="testimonial__photo">
-              <img src="dist/images/testimonial-jane.jpg">
+              <img class="lazyload" sizes="160px" data-srcset="dist/images/testimonial-jane.jpg 160w, dist/images/testimonial-jane-hi-dpi.jpg 320w" alt="Jane Doe">
             </div>
             <h3 class="testimonial__title">Jane Doe</h3>
             <h4 class="testimonial__subtitle">9 Time Escaper</h4>
@@ -140,7 +142,7 @@
         <div class="row__medium-4">
           <div class="testimonial">
             <div class="testimonial__photo">
-              <img src="dist/images/testimonial-john.jpg">
+              <img class="lazyload" sizes="160px" data-srcset="dist/images/testimonial-john.jpg 160w, dist/images/testimonial-john-hi-dpi.jpg 1320w" alt="John Smith">
             </div>
             <h3 class="testimonial__title">John Smith</h3>
             <h4 class="testimonial__subtitle">4 Time Escaper</h4>
@@ -150,7 +152,7 @@
         <div class="row__medium-4">
           <div class="testimonial testimonial--last">
             <div class="testimonial__photo">
-              <img src="dist/images/testimonial-cat.jpg">
+              <img class="lazyload" sizes="160px" data-srcset="dist/images/testimonial-cat.jpg 160w, dist/images/testimonial-cat-hi-dpi.jpg 1320w" alt="Cat McKitty">
             </div>
             <h3 class="testimonial__title">Cat McKitty</h3>
             <h4 class="testimonial__subtitle">6 Time Escaper</h4>
@@ -186,6 +188,5 @@
 
   <!-- JavaScript File -->
   <script type="text/javascript" src="./dist/scripts/App.js"></script>
-    <!-- <script src="dist/all.js?cb=1595251453303"></script> -->
 </body>
 </html>

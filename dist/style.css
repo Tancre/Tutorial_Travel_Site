@@ -108,13 +108,18 @@ a {
     @media (min-width: 800px) {
       .page-section--no-b-padding-until-medium {
         padding-bottom: 4.5rem; } }
+  .page-section--no-b-padding-until-large {
+    padding-bottom: 0; }
+    @media (min-width: 800px) {
+      .page-section--no-b-padding-until-large {
+        padding-bottom: 4.5rem; } }
   .page-section--blue {
     background-color: #2f5572;
     color: #fff; }
   .page-section--testimonials {
     background: #e0e6ef; }
     @media (min-width: 800px) {
-      .page-section--testimonials {
+      .page-section--testimonials.lazyloaded {
         background: url("./images/testimonials-bg.jpg") top center no-repeat;
         background-size: cover; } }
 
