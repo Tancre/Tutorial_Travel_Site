@@ -331,7 +331,7 @@ a {
 .icon--star {
   width: 64px;
   height: 64px;
-  background-position: 32.82051282051282% 99.62096774193549%; }
+  background-position: 32.82051282051282% 100%; }
 
 .icon--twitter {
   width: 51.78px;
@@ -373,7 +373,10 @@ a {
     background-color: rgba(47, 85, 114, 0.55); }
   @media (min-width: 800px) {
     .site-header {
-      background-color: rgba(47, 85, 114, 0.3); } }
+      position: fixed;
+      background-color: rgba(47, 85, 114, 0.3); }
+      .site-header--dark {
+        background-color: rgba(23, 51, 72, 0.85); } }
   @media (min-width: 800px) {
     .site-header__btn-container {
       float: right; } }
@@ -383,12 +386,15 @@ a {
     left: 50%;
     transform-origin: 50% 0%;
     transform: translateX(-50%) scale(0.8);
+    transition: transform .3s ease-out;
     background-color: #2f5572;
     padding: 25px 36px; }
     @media (min-width: 800px) {
       .site-header__logo {
         left: auto;
-        transform: translateX(0); } }
+        transform: translateX(0); }
+        .site-header--dark .site-header__logo {
+          transform: scale(0.57); } }
   .site-header__logo__graphic {
     text-indent: -9999px; }
   .site-header__menu-icon {
@@ -497,7 +503,9 @@ a {
       .primary-nav a {
         background: transparent;
         font-size: 1rem;
-        padding: 12px 0; } }
+        padding: 12px 0; }
+        .primary-nav a.is-current-link {
+          color: #fabb69; } }
 
 .reveal-item {
   opacity: 0;
