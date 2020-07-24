@@ -32,7 +32,7 @@ const files = {
 }
 
 // ------------------------------------------------------ copy normalize task
-function copyNormalizerTask(){
+function copyNormalizeTask(){
 	return src('./node_modules/normalize.css/normalize.css')
 		.pipe(rename('_normalize.scss'))
 		.pipe(dest('./app/assets/scss/base'));
@@ -143,7 +143,7 @@ function scssTask() {
 //BUILD
 // ------------------------------------------------------ delete dist folder
 function deleteDistFolder(){
-	return del('./dist');
+	return del('./docs');
 }
 
 // ------------------------------------------------------ optimize images task
@@ -154,13 +154,13 @@ function imagesTask(){
 			interlaced: true,
 			multipass: true
 		}))
-		.pipe(dest('./dist/assets/images'));
+		.pipe(dest('./docs/assets/images'));
 }
 
 // ------------------------------------------------------ copy sprite folder
 function copySpriteFolder(){
 	return src('./app/temp/images/sprite/*')
-		.pipe(dest('./dist/assets/images/sprite'));
+		.pipe(dest('./docs/assets/images/sprite'));
 }
 
 // ------------------------------------------------------ usemin task
@@ -170,7 +170,7 @@ function useminTask(){
 		css: [function(){return rev()}, function(){return cssnano()}],
 		js: [function(){return rev()}]
 	}))
-		.pipe(dest('./dist'));
+		.pipe(dest('./docs'));
 }
 
 //.------------------------------------------------------- copy general files
@@ -186,7 +186,7 @@ function copyGeneralFiles(){
 	]
 
 	return src(pathsToCopy)
-		.pipe(dest('./dist'));
+		.pipe(dest('./docs'));
 }
 
 //.------------------------------------------------------- preview dist
@@ -194,7 +194,7 @@ function previewDist(){
 	browserSync.init({
 		notify: false,
     	server: {
-    		baseDir: './dist'
+    		baseDir: './docs'
     	}
     });
 }
@@ -202,13 +202,13 @@ function previewDist(){
 
 //  ------------------------------------------------------ cachebusting task
 
-// const cbString = new Date().getTime();
+const cbString = new Date().getTime();
 
-// function cacheBustTask() {
-// 	return src(['index.html'])
-// 		.pipe(replace(/cb=\d+/g, 'cb=' + cbString))
-// 		.pipe(dest('.'));
-// }
+function cacheBustTask() {
+	return src(['./docs/index.html'])
+		.pipe(replace(/cb=\d+/g, 'cb=' + cbString))
+		.pipe(dest('./docs'));
+}
 
 //  ------------------------------------------------------ watch task
 const watch = function() {
@@ -224,6 +224,7 @@ const watch = function() {
     gulp.watch("./app/*.html").on('change', browserSync.reload);
 };
 
+
 // default task
 exports.default = series(
 	// parallel( scssTask, cleanScripts, scriptsTask, createSpriteTask, imagesTask),
@@ -232,9 +233,9 @@ exports.default = series(
 );
 
 exports.watch = watch;
-exports.scssTask = scssTask;
-exports.scripts = series(cleanScripts, modernizrTask, scriptsTask, endCleanModernizr)
-exports.icons = series(beginClean, createSpriteTask, createPngCopy, copySpriteGraphic, copySpriteCSS, endClean);
-exports.copyNormalizerTask = copyNormalizerTask;
-exports.build = series(deleteDistFolder, useminTask, beginClean, createSpriteTask, createPngCopy, copySpriteGraphic, copySpriteCSS, endClean, scssTask,  cleanScripts, modernizrTask, scriptsTask, endCleanModernizr, imagesTask, copySpriteFolder, copyGeneralFiles);
+const styles = scssTask;
+const scripts = series(cleanScripts, modernizrTask, scriptsTask, endCleanModernizr)
+const icons = series(beginClean, createSpriteTask, createPngCopy, copySpriteGraphic, copySpriteCSS, endClean);
+exports.copyNormalizerTask = copyNormalizeTask;
+exports.build = series(deleteDistFolder, icons, copySpriteFolder, styles, scripts, imagesTask, copyGeneralFiles, useminTask, cacheBustTask);
 exports.previewDist = previewDist;
