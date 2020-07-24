@@ -1,30 +1,21 @@
-@import "../../node_modules/normalize.css/normalize.css";
-@import "./base/_variables";
-@import "./base/_global";
-@import "./base/_mixins";
-@import "./modules/_btn";
-@import "./modules/_large-hero";
-@import "./modules/_wrapper";
-@import "./modules/_page-section";
-@import "./modules/_headline";
-@import "./modules/_row";
-@import "./modules/_generic-content-container";
-@import "./modules/_section-title";
-@import "./modules/_feature-item";
-@import "./modules/_testimonial";
-@import "./modules/_sprite";
-@import "./modules/_site-footer";
-@import "./modules/_site-header";
-@import "./modules/_primary-nav";
-@import "./modules/_reveal-item";
-@import "./modules/_modal";
-@import "./modules/_social-icons";
-
-
-
-
- 
-
-
-
-
+@import './base/_normalize';
+@import './base/variables';
+@import './base/global';
+@import './base/mixins';
+@import './modules/btn';
+@import './modules/feature-item';
+@import './modules/generic-content-container';
+@import './modules/headline';
+@import './modules/large-hero';
+@import './modules/modal';
+@import './modules/page-section';
+@import './modules/primary-nav';
+@import './modules/reveal-item';
+@import './modules/row';
+@import './modules/section-title';
+@import './modules/site-footer';
+@import './modules/site-header';
+@import './modules/social-icons';
+@import './modules/sprite';
+@import './modules/testimonial';
+@import './modules/wrapper';
